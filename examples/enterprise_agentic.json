@@ -1,0 +1,6 @@
+{
+  "hardware": "h100_sxm",
+  "model": "llama3_70b",
+  "pricing": "on_demand_cloud",
+  "workload": "enterprise_agentic"
+}

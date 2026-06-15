@@ -1,0 +1,82 @@
+llama3_70b:
+  display_name:
+    value: "Llama 3 class 70B dense model"
+    unit: "name"
+    source: "Representative open model architecture assumptions"
+    observed_date: "2026-06"
+    confidence: "low"
+    notes: "Planning profile, not an exact vendor benchmark."
+  layers:
+    value: 80
+    unit: "layers"
+    source: "Representative 70B architecture"
+    observed_date: "2026-06"
+    confidence: "medium"
+    notes: "Used for KV-cache memory estimation."
+  kv_heads:
+    value: 8
+    unit: "heads"
+    source: "Representative grouped-query attention assumption"
+    observed_date: "2026-06"
+    confidence: "low"
+    notes: "KV heads may vary across model variants."
+  head_dim:
+    value: 128
+    unit: "dimensions"
+    source: "Representative transformer architecture assumption"
+    observed_date: "2026-06"
+    confidence: "medium"
+    notes: "Used in KV-cache formula."
+  bytes_per_element:
+    value: 2
+    unit: "bytes"
+    source: "BF16/FP16 KV-cache assumption"
+    observed_date: "2026-06"
+    confidence: "medium"
+    notes: "Use 1 for FP8 or quantized KV-cache scenarios."
+  weight_memory_gb:
+    value: 40
+    unit: "GB"
+    source: "Quantized serving assumption"
+    observed_date: "2026-06"
+    confidence: "low"
+    notes: "Approximate memory footprint for a quantized 70B-class deployment."
+  throughput:
+    h100_sxm:
+      prefill_tokens_per_second:
+        low: 90000
+        mid: 130000
+        high: 180000
+        unit: "tokens/sec/GPU"
+        source: "Planning range from public benchmark patterns"
+        observed_date: "2026-06"
+        confidence: "low"
+        notes: "Highly sensitive to engine, batching, context shape, and quantization."
+      decode_tokens_per_second:
+        low: 1800
+        mid: 2600
+        high: 3600
+        unit: "tokens/sec/GPU"
+        source: "Planning range from public benchmark patterns"
+        observed_date: "2026-06"
+        confidence: "low"
+        notes: "Decode throughput is often the binding constraint for chat workloads."
+    a100_sxm:
+      prefill_tokens_per_second:
+        low: 38000
+        mid: 55000
+        high: 75000
+        unit: "tokens/sec/GPU"
+        source: "Planning range from public benchmark patterns"
+        observed_date: "2026-06"
+        confidence: "low"
+        notes: "Approximate comparative range for older accelerator."
+      decode_tokens_per_second:
+        low: 700
+        mid: 1050
+        high: 1450
+        unit: "tokens/sec/GPU"
+        source: "Planning range from public benchmark patterns"
+        observed_date: "2026-06"
+        confidence: "low"
+        notes: "Approximate comparative range for older accelerator."

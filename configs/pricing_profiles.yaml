@@ -1,0 +1,43 @@
+on_demand_cloud:
+  h100_sxm:
+    hourly_cost_usd:
+      low: 3.50
+      mid: 5.20
+      high: 7.40
+      unit: "USD/GPU-hour"
+      source: "Representative public cloud and GPU marketplace pricing"
+      observed_date: "2026-06"
+      confidence: "low"
+      notes: "Prices vary significantly by provider, region, availability, and commitment model."
+  a100_sxm:
+    hourly_cost_usd:
+      low: 1.60
+      mid: 2.80
+      high: 4.40
+      unit: "USD/GPU-hour"
+      source: "Representative public cloud and GPU marketplace pricing"
+      observed_date: "2026-06"
+      confidence: "low"
+      notes: "Prices vary significantly by provider, region, availability, and commitment model."
+
+committed_capacity:
+  h100_sxm:
+    hourly_cost_usd:
+      low: 2.00
+      mid: 3.60
+      high: 5.50
+      unit: "USD/GPU-hour"
+      source: "Representative committed-use planning assumption"
+      observed_date: "2026-06"
+      confidence: "low"
+      notes: "Use only for comparative planning, not procurement."
+  a100_sxm:
+    hourly_cost_usd:
+      low: 0.95
+      mid: 1.80
+      high: 3.10
+      unit: "USD/GPU-hour"
+      source: "Representative committed-use planning assumption"
+      observed_date: "2026-06"
+      confidence: "low"
+      notes: "Use only for comparative planning, not procurement."

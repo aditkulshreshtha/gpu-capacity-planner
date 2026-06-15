@@ -1,0 +1,115 @@
+enterprise_agentic:
+  display_name:
+    value: "Enterprise agentic assistant workload"
+    unit: "name"
+    source: "Planning scenario"
+    observed_date: "2026-06"
+    confidence: "low"
+    notes: "Models user tasks that fan out into several model calls."
+  requests_per_day:
+    value: 0
+    unit: "requests/day"
+    source: "Planning scenario"
+    observed_date: "2026-06"
+    confidence: "low"
+    notes: "Direct request volume is zero because this scenario derives requests from agent tasks."
+  agent_tasks_per_day:
+    value: 250000
+    unit: "tasks/day"
+    source: "Planning scenario"
+    observed_date: "2026-06"
+    confidence: "low"
+    notes: "A user-facing task can trigger multiple inference calls."
+  avg_model_calls_per_task:
+    value: 4
+    unit: "calls/task"
+    source: "Planning scenario"
+    observed_date: "2026-06"
+    confidence: "low"
+    notes: "Agentic fan-out multiplier."
+  avg_input_tokens:
+    value: 4000
+    unit: "tokens/request"
+    source: "Planning scenario"
+    observed_date: "2026-06"
+    confidence: "low"
+    notes: "Long context is a first-class capacity driver."
+  avg_output_tokens:
+    value: 500
+    unit: "tokens/request"
+    source: "Planning scenario"
+    observed_date: "2026-06"
+    confidence: "low"
+    notes: "Decode volume often drives GPU count."
+  p95_latency_slo_ms:
+    value: 1500
+    unit: "milliseconds"
+    source: "Planning scenario"
+    observed_date: "2026-06"
+    confidence: "low"
+    notes: "Used for concurrency and queue sanity checks."
+  peak_to_average_ratio:
+    value: 2.0
+    unit: "ratio"
+    source: "Planning scenario"
+    observed_date: "2026-06"
+    confidence: "low"
+    notes: "Simple seasonality and diurnal burst factor."
+
+support_chat:
+  display_name:
+    value: "Customer support chat workload"
+    unit: "name"
+    source: "Planning scenario"
+    observed_date: "2026-06"
+    confidence: "low"
+    notes: "Direct request volume with shorter context."
+  requests_per_day:
+    value: 500000
+    unit: "requests/day"
+    source: "Planning scenario"
+    observed_date: "2026-06"
+    confidence: "low"
+    notes: "Direct inference request volume."
+  agent_tasks_per_day:
+    value: 0
+    unit: "tasks/day"
+    source: "Planning scenario"
+    observed_date: "2026-06"
+    confidence: "low"
+    notes: "No agent expansion in this baseline."
+  avg_model_calls_per_task:
+    value: 0
+    unit: "calls/task"
+    source: "Planning scenario"
+    observed_date: "2026-06"
+    confidence: "low"
+    notes: "No agent expansion in this baseline."
+  avg_input_tokens:
+    value: 1200
+    unit: "tokens/request"
+    source: "Planning scenario"
+    observed_date: "2026-06"
+    confidence: "low"
+    notes: "Typical support-turn context assumption."
+  avg_output_tokens:
+    value: 300
+    unit: "tokens/request"
+    source: "Planning scenario"
+    observed_date: "2026-06"
+    confidence: "low"
+    notes: "Average generated response length."
+  p95_latency_slo_ms:
+    value: 1200
+    unit: "milliseconds"
+    source: "Planning scenario"
+    observed_date: "2026-06"
+    confidence: "low"
+    notes: "Used for concurrency and queue sanity checks."
+  peak_to_average_ratio:
+    value: 1.8
+    unit: "ratio"
+    source: "Planning scenario"
+    observed_date: "2026-06"
+    confidence: "low"
+    notes: "Simple traffic peak multiplier."

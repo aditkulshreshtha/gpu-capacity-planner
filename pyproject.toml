@@ -1,0 +1,18 @@
+[project]
+name = "gpu-capacity-planner"
+version = "0.1.0"
+description = "A v0 GPU capacity planner for AI inference workloads."
+readme = "README.md"
+requires-python = ">=3.9"
+authors = [{ name = "Adit" }]
+license = { text = "MIT" }
+
+[project.scripts]
+gpu-capacity-planner = "gpu_capacity_planner.cli:main"
+
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["src"]

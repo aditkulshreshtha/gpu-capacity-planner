@@ -1,0 +1,59 @@
+h100_sxm:
+  display_name:
+    value: "NVIDIA H100 SXM 80GB"
+    unit: "name"
+    source: "Public NVIDIA product materials and cloud instance documentation"
+    observed_date: "2026-06"
+    confidence: "medium"
+    notes: "Used as a representative high-end data center GPU profile."
+  vram_gb:
+    value: 80
+    unit: "GB"
+    source: "Public NVIDIA H100 SXM specifications"
+    observed_date: "2026-06"
+    confidence: "medium"
+    notes: "Usable memory is lower after model weights, runtime overhead, fragmentation, and safety reserve."
+  target_utilization:
+    value: 0.72
+    unit: "ratio"
+    source: "Planning assumption"
+    observed_date: "2026-06"
+    confidence: "low"
+    notes: "Keeps headroom for burstiness, scheduling gaps, and tail latency protection."
+  runtime_memory_reserve_gb:
+    value: 8
+    unit: "GB"
+    source: "Planning assumption"
+    observed_date: "2026-06"
+    confidence: "low"
+    notes: "Approximate reservation for runtime overhead, fragmentation, activations, and safety buffer."
+
+a100_sxm:
+  display_name:
+    value: "NVIDIA A100 SXM 80GB"
+    unit: "name"
+    source: "Public NVIDIA A100 specifications"
+    observed_date: "2026-06"
+    confidence: "medium"
+    notes: "Included for comparative planning against H100-class capacity."
+  vram_gb:
+    value: 80
+    unit: "GB"
+    source: "Public NVIDIA A100 SXM specifications"
+    observed_date: "2026-06"
+    confidence: "medium"
+    notes: "Usable memory is lower after model weights and runtime overhead."
+  target_utilization:
+    value: 0.68
+    unit: "ratio"
+    source: "Planning assumption"
+    observed_date: "2026-06"
+    confidence: "low"
+    notes: "Slightly lower target for older GPU profile."
+  runtime_memory_reserve_gb:
+    value: 8
+    unit: "GB"
+    source: "Planning assumption"
+    observed_date: "2026-06"
+    confidence: "low"
+    notes: "Approximate runtime and fragmentation reserve."
