@@ -55,6 +55,27 @@ enterprise_agentic:
     observed_date: "2026-06"
     confidence: "low"
     notes: "Simple seasonality and diurnal burst factor."
+  monthly_growth_rate:
+    value: 0.12
+    unit: "ratio/month"
+    source: "Planning scenario"
+    observed_date: "2026-06"
+    confidence: "low"
+    notes: "Compound monthly workload growth used for capacity forecasting."
+  forecast_months:
+    value: 6
+    unit: "months"
+    source: "Planning scenario"
+    observed_date: "2026-06"
+    confidence: "low"
+    notes: "Default forecast horizon for planning reports."
+  committed_gpus:
+    value: 8
+    unit: "GPUs"
+    source: "Planning scenario"
+    observed_date: "2026-06"
+    confidence: "low"
+    notes: "Currently available capacity used to identify shortfall timing."
 
 support_chat:
   display_name:
@@ -113,3 +134,103 @@ support_chat:
     observed_date: "2026-06"
     confidence: "low"
     notes: "Simple traffic peak multiplier."
+  monthly_growth_rate:
+    value: 0.08
+    unit: "ratio/month"
+    source: "Planning scenario"
+    observed_date: "2026-06"
+    confidence: "low"
+    notes: "Compound monthly workload growth used for capacity forecasting."
+  forecast_months:
+    value: 6
+    unit: "months"
+    source: "Planning scenario"
+    observed_date: "2026-06"
+    confidence: "low"
+    notes: "Default forecast horizon for planning reports."
+  committed_gpus:
+    value: 4
+    unit: "GPUs"
+    source: "Planning scenario"
+    observed_date: "2026-06"
+    confidence: "low"
+    notes: "Currently available capacity used to identify shortfall timing."
+
+batch_document_processing:
+  display_name:
+    value: "Batch document processing workload"
+    unit: "name"
+    source: "Planning scenario"
+    observed_date: "2026-06"
+    confidence: "low"
+    notes: "High-volume asynchronous workload with relaxed latency."
+  requests_per_day:
+    value: 1200000
+    unit: "requests/day"
+    source: "Planning scenario"
+    observed_date: "2026-06"
+    confidence: "low"
+    notes: "Direct inference request volume for batch processing."
+  agent_tasks_per_day:
+    value: 0
+    unit: "tasks/day"
+    source: "Planning scenario"
+    observed_date: "2026-06"
+    confidence: "low"
+    notes: "No agent expansion in this baseline."
+  avg_model_calls_per_task:
+    value: 0
+    unit: "calls/task"
+    source: "Planning scenario"
+    observed_date: "2026-06"
+    confidence: "low"
+    notes: "No agent expansion in this baseline."
+  avg_input_tokens:
+    value: 9000
+    unit: "tokens/request"
+    source: "Planning scenario"
+    observed_date: "2026-06"
+    confidence: "low"
+    notes: "Longer document context creates KV-cache pressure."
+  avg_output_tokens:
+    value: 700
+    unit: "tokens/request"
+    source: "Planning scenario"
+    observed_date: "2026-06"
+    confidence: "low"
+    notes: "Average generated extraction or summary length."
+  p95_latency_slo_ms:
+    value: 10000
+    unit: "milliseconds"
+    source: "Planning scenario"
+    observed_date: "2026-06"
+    confidence: "low"
+    notes: "Relaxed SLO for asynchronous batch work."
+  peak_to_average_ratio:
+    value: 1.4
+    unit: "ratio"
+    source: "Planning scenario"
+    observed_date: "2026-06"
+    confidence: "low"
+    notes: "Batch workloads are assumed to be smoother than interactive traffic."
+  monthly_growth_rate:
+    value: 0.06
+    unit: "ratio/month"
+    source: "Planning scenario"
+    observed_date: "2026-06"
+    confidence: "low"
+    notes: "Compound monthly workload growth used for capacity forecasting."
+  forecast_months:
+    value: 6
+    unit: "months"
+    source: "Planning scenario"
+    observed_date: "2026-06"
+    confidence: "low"
+    notes: "Default forecast horizon for planning reports."
+  committed_gpus:
+    value: 12
+    unit: "GPUs"
+    source: "Planning scenario"
+    observed_date: "2026-06"
+    confidence: "low"
+    notes: "Currently available capacity used to identify shortfall timing."

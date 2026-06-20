@@ -8,6 +8,7 @@ from pathlib import Path
 from typing import Any
 
 from .config import CONFIG_DIR, load_default_configs
+from .forecast import ForecastReport, build_forecast_report
 from .planner import CapacityPlan, build_capacity_plan
 from .validation import validation_report
 
@@ -21,6 +22,8 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--workload", default="enterprise_agentic")
     parser.add_argument("--output", choices=("text", "json"), default="text")
     parser.add_argument("--validate", action="store_true")
+    parser.add_argument("--forecast", action="store_true")
+    parser.add_argument("--months", type=int)
     args = parser.parse_args(argv)
 
     configs = load_default_configs(args.config_dir)
@@ -33,6 +36,16 @@ def main(argv: list[str] | None = None) -> int:
     )
 
     payload: dict[str, Any] = {"plan": plan.to_dict()}
+    if args.forecast:
+        forecast = build_forecast_report(
+            configs=configs,
+            hardware_key=args.hardware,
+            model_key=args.model,
+            pricing_key=args.pricing,
+            workload_key=args.workload,
+            months=args.months,
+        )
+        payload["forecast"] = forecast.to_dict()
     if args.validate:
         payload["validation"] = validation_report(plan)
 
@@ -40,6 +53,9 @@ def main(argv: list[str] | None = None) -> int:
         print(json.dumps(payload, indent=2, sort_keys=True))
     else:
         print(_format_plan(plan))
+        if args.forecast:
+            print()
+            print(_format_forecast(forecast))
         if args.validate:
             print()
             print(_format_validation(payload["validation"]))
@@ -90,6 +106,32 @@ def _format_validation(report: dict[str, Any]) -> str:
             f"{point['expected_wait_seconds']:.3f}    "
             f"{point['expected_system_seconds']:.3f}     "
             f"{point['expected_queue_depth']:.3f}"
+        )
+    return "\n".join(lines)
+
+
+def _format_forecast(report: ForecastReport) -> str:
+    first_shortfall = (
+        f"month {report.first_shortfall_month}"
+        if report.first_shortfall_month is not None
+        else "none in horizon"
+    )
+    lines = [
+        "Capacity Forecast:",
+        f"Monthly growth rate: {report.monthly_growth_rate:.1%}",
+        f"Committed GPUs: {report.committed_gpus}",
+        f"First shortfall: {first_shortfall}",
+        "Month  Req/day      Peak RPS  GPUs  Shortfall  Binding  Mid monthly cost",
+    ]
+    for period in report.periods:
+        lines.append(
+            f"{period.month:<5}  "
+            f"{period.requests_per_day:>10,.0f}  "
+            f"{period.peak_requests_per_second:>8.2f}  "
+            f"{period.required_gpus:>4}  "
+            f"{period.gpu_shortfall:>9}  "
+            f"{period.binding_constraint:<7}  "
+            f"${period.monthly_cost_mid_usd:>14,.2f}"
         )
     return "\n".join(lines)
 

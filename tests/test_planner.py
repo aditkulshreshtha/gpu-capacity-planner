@@ -1,6 +1,7 @@
 import unittest
 
 from gpu_capacity_planner.config import load_default_configs
+from gpu_capacity_planner.forecast import build_forecast_report
 from gpu_capacity_planner.planner import build_capacity_plan
 from gpu_capacity_planner.validation import validation_report
 
@@ -51,6 +52,22 @@ class CapacityPlannerTests(unittest.TestCase):
         report = validation_report(plan)
 
         self.assertTrue(report["monotonic_wait_growth"])
+
+    def test_forecast_growth_increases_capacity_pressure(self):
+        configs = load_default_configs()
+        report = build_forecast_report(
+            configs,
+            hardware_key="h100_sxm",
+            model_key="llama3_70b",
+            pricing_key="on_demand_cloud",
+            workload_key="enterprise_agentic",
+            months=4,
+        )
+
+        self.assertEqual(len(report.periods), 4)
+        self.assertGreater(report.periods[-1].requests_per_day, report.periods[0].requests_per_day)
+        self.assertGreaterEqual(report.periods[-1].required_gpus, report.periods[0].required_gpus)
+        self.assertIsNotNone(report.first_shortfall_month)
 
 
 if __name__ == "__main__":

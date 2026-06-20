@@ -1,6 +1,6 @@
-# GPU Capacity Planner v0
+# GPU Capacity Planner
 
-GPU Capacity Planner v0 estimates inference GPU requirements from explicit workload, model, hardware, and pricing assumptions. It is the first layer of a larger inference control plane simulator, focused on capacity planning before scheduling, cost attribution, or incident simulation.
+GPU Capacity Planner estimates inference GPU requirements from explicit workload, model, hardware, and pricing assumptions. It is the first layer of a larger inference control plane simulator, focused on capacity planning before scheduling, cost attribution, or incident simulation.
 
 The planner answers:
 
@@ -8,6 +8,7 @@ The planner answers:
 - Is the workload compute-bound or memory-bound?
 - How do input tokens, output tokens, context length, and agentic fan-out change demand?
 - What is the rough cost per request and per million tokens?
+- When does committed capacity run short under growth?
 - Does queueing behavior look sane as utilization approaches saturation?
 
 All hardware throughput, pricing, and memory assumptions are approximate and date-sensitive. They are intended for comparative simulation, not procurement decisions. Update configs before using this model for real planning.
@@ -29,6 +30,12 @@ If running directly from a clone without installing the package:
 
 ```bash
 PYTHONPATH=src python3 -m gpu_capacity_planner.cli --output json
+```
+
+Generate a six-month capacity forecast:
+
+```bash
+PYTHONPATH=src python3 -m gpu_capacity_planner.cli --forecast --months 6
 ```
 
 Run tests:
@@ -62,6 +69,19 @@ KV cache bytes ~= 2 * layers * kv_heads * head_dim * sequence_length * bytes_per
 
 The factor of 2 accounts for keys and values.
 
+## Capacity Forecasting
+
+Forecast mode compounds workload growth month by month and reruns the capacity model for each period. It reports:
+
+- Required GPUs
+- Committed GPUs
+- Capacity shortfall
+- Binding constraint
+- Peak requests per second
+- Mid-case monthly cost
+
+This keeps the project focused on operational planning questions: when to buy or reserve capacity, what workload shape is driving the shortage, and whether the bottleneck is compute or KV-cache memory.
+
 ## Configuration
 
 Assumptions live in YAML files under `configs/`:
@@ -77,14 +97,32 @@ Every assumption includes units, source notes, observed date, confidence, and no
 
 ```text
 Scenario: enterprise_agentic on llama3_70b / h100_sxm
-Required GPUs: 9
+Required GPUs: 7
 Binding constraint: compute
-Compute GPUs: 9
-Memory GPUs: 1
+Compute GPUs: 7
+  Prefill GPUs: 1
+  Decode GPUs: 7
+Memory GPUs: 2
 Peak requests/sec: 23.15
-KV cache at SLO concurrency: 5.79 GB
-Estimated monthly cost: $20,995.20 - $44,582.40
-Cost per 1M tokens: $0.20 - $0.43
+Input tokens/sec: 92,593
+Output tokens/sec: 11,574
+SLO concurrency: 34.72 requests
+KV cache at SLO concurrency: 47.68 GB
+Estimated monthly cost: $17,885.00 - $37,814.00
+Mid cost/request: $0.00087
+Cost per 1M tokens: $0.0082 - $0.0174
+
+Capacity Forecast:
+Monthly growth rate: 12.0%
+Committed GPUs: 8
+First shortfall: month 4
+Month  Req/day      Peak RPS  GPUs  Shortfall  Binding  Mid monthly cost
+1       1,000,000     23.15     7          0  compute  $     26,572.00
+2       1,120,000     25.93     7          0  compute  $     26,572.00
+3       1,254,400     29.04     8          0  compute  $     30,368.00
+4       1,404,928     32.52     9          1  compute  $     34,164.00
+5       1,573,519     36.42    10          2  compute  $     37,960.00
+6       1,762,342     40.79    11          3  compute  $     41,756.00
 ```
 
 Actual output may differ as assumptions are updated.
@@ -101,8 +139,8 @@ PYTHONPATH=src python3 -m gpu_capacity_planner.cli --validate
 
 ## Roadmap
 
-1. Capacity Planner v0
-2. Scheduler Simulator
+1. Capacity Planner and Forecast Report
+2. Scheduler Policy Benchmarking
 3. Cost Attribution
 4. Reliability and SLO Guardrails
 5. Incident Simulation
